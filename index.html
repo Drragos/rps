@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function getComputerChoice() {
+        let choice = Math.floor(Math.random() * (4 - 1) + 1);
+        let result =
+          choice === 1 ? "rock" : choice === 2 ? "paper" : "scissors";
+        return result;
+      }
+
+      function game() {
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function playRound(playerSelection, computerSelection) {
+          let playerChoice = prompt("Rock, Paper or Scissors?");
+          playerSelection = playerChoice.toLowerCase();
+          computerSelection = getComputerChoice();
+          console.log("You choose: " + playerSelection);
+          console.log("Your computer chooses: " + computerSelection);
+
+          let result =
+            playerSelection === "rock" && computerSelection === "paper"
+              ? "You Lose! Paper beats Rock"
+              : playerSelection === computerSelection
+              ? "Stalemate"
+              : playerSelection === "rock" && computerSelection === "scissors"
+              ? "You Win! Rock beats Scissors"
+              : playerSelection === "scissors" && computerSelection === "paper"
+              ? "You Win! Scissors beats Paper"
+              : playerSelection === "scissors" && computerSelection === "rock"
+              ? "You Lose! Rock beats Scissors"
+              : playerSelection === "paper" && computerSelection === "rock"
+              ? "You Win! Paper beats Rock"
+              : "You Lose! Scissors beats Paper";
+          return console.log(result);
+        }
+
+        switch (playRound()) {
+          case "You Lose! Paper beats Rock":
+            computerScore++;
+            console.log(computerScore);
+            break;
+          case "You Win! Rock beats Scissors":
+            playerScore++;
+            console.log(playerScore);
+            break;
+          case "You Win! Scissors beats Paper":
+            playerScore++;
+            console.log(playerScore);
+            break;
+          case "You Lose! Rock beats Paper":
+            computerScore++;
+            console.log(computerScore);
+            break;
+          case "You Win! Paper beats Rock":
+            playerScore++;
+            console.log(playerScore);
+            break;
+          case "You Lose! Scissors beats Paper":
+            computerScore++;
+            console.log(computerScore);
+            break;
+        }
+    }
+
+    game();
+    game();
+    game();
+
+    
+    </script>
+  </body>
+</html>
