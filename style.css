@@ -1,0 +1,25 @@
+.flex-container {
+    display: flex;
+    height: 200px;
+    width: 1000px;
+    margin: 600px auto 50px auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-end;
+    align-content: flex-end;
+    gap: 100px 100px;
+    background-color: pink;
+}
+
+.rock {
+    margin: auto;
+}
+
+.paper {
+    margin: auto;
+}
+
+.scissors {
+    margin: auto;
+}
