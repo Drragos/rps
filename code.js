@@ -1,64 +1,91 @@
-function getComputerChoice() {
-    let choice = Math.floor(Math.random() * (4 - 1) + 1);
-    let result =
-      choice === 1 ? "rock" : choice === 2 ? "paper" : "scissors";
-    return result;
+let winners = [];
+const choices = ["rock", "paper", "scissors"];
+
+function startGame() {
+  let imgs = document.querySelectorAll("img");
+  imgs.forEach((img) =>
+    img.addEventListener("click", () => {
+      if (img.id) {
+        playRound(img.id);
+      }
+    })
+  );
+}
+
+function playRound(playerChoice) {
+  if (wins >= 5) {
+    return;
   }
 
-  function game() {
-    
-    let playerScore = 0;
-    let computerScore = 0;
+  let wins = checkWins();
 
-    function playRound(playerSelection, computerSelection) {
-      let playerChoice = prompt("Rock, Paper or Scissors?");
-      playerSelection = playerChoice.toLowerCase();
-      computerSelection = getComputerChoice();
-      console.log("You choose: " + playerSelection);
-      console.log("Your computer chooses: " + computerSelection);
+  const computerChoice = computerSelect();
 
-      let result =
-        playerSelection === "rock" && computerSelection === "paper"
-          ? "You Lose! Paper beats Rock"
-          : playerSelection === computerSelection
-          ? "Stalemate"
-          : playerSelection === "rock" && computerSelection === "scissors"
-          ? "You Win! Rock beats Scissors"
-          : playerSelection === "scissors" && computerSelection === "paper"
-          ? "You Win! Scissors beats Paper"
-          : playerSelection === "scissors" && computerSelection === "rock"
-          ? "You Lose! Rock beats Scissors"
-          : playerSelection === "paper" && computerSelection === "rock"
-          ? "You Win! Paper beats Rock"
-          : "You Lose! Scissors beats Paper";
-      return console.log(result);
-    }
+  const winner = checkWinner(playerChoice, computerChoice);
 
-    switch (playRound()) {
-      case "You Lose! Paper beats Rock":
-        computerScore++;
-        console.log(computerScore);
-        break;
-      case "You Win! Rock beats Scissors":
-        playerScore++;
-        console.log(playerScore);
-        break;
-      case "You Win! Scissors beats Paper":
-        playerScore++;
-        console.log(playerScore);
-        break;
-      case "You Lose! Rock beats Paper":
-        computerScore++;
-        console.log(computerScore);
-        break;
-      case "You Win! Paper beats Rock":
-        playerScore++;
-        console.log(playerScore);
-        break;
-      case "You Lose! Scissors beats Paper":
-        computerScore++;
-        console.log(computerScore);
-        break;
-    }
+  winners.push(winner);
+  tallyWins();
+  displayRound(playerChoice, computerChoice, winner);
+  wins = checkWins();
+  if (wins == 5) {
+    displayEnd();
   }
+}
 
+function displayEnd() {
+  let playerWins = winners.filter((item) => item == "Player").length;
+
+  if (playerWins == 5) {
+    document.querySelector(`.winner`).textContent = 'You Won! Congrats!';
+  } else {
+    document.querySelector(`.winner`).textContent = 'You Lose!';
+  }
+  document.querySelector('.reset').style.display = 'flex';
+}
+
+function displayRound(playerChoice, computerChoice, winner) {
+  document.querySelector('.playerChoice').textContent = `You Chose: ${playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1)}`;
+  document.querySelector('.computerhoice').textContent = `The Computer Chose: ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}`;
+  document.querySelector('.winner').textContent = `Round Winner: ${winner}`;
+}
+
+function tallyWins() {
+  const pWinCount = winners.filter((item) => item == "Player").length;
+  const cWinCount = winners.filter((item) => item == "Computer").length;
+  const ties = winners.filter((item) => item == "Tie").length;
+  document.querySelector('.playerScore').textContent = `Score: ${pWinCount}`;
+  document.querySelector('.computerScore').textContent = `Score: ${cWinCount}`;
+  document.querySelector('.ties').textContent = `Score: ${ties}`;
+
+
+function computerSelect() {
+  return choices[Math.floor(Math.random() * choices.length)];
+}
+
+function checkWins() {
+  const pWinCount = winners.filter((item) => item == "Player").length;
+  const cWinCount = winners.filter((item) => item == "Computer").length;
+  return Math.max(pWinCount, cWinCount);
+}
+
+function checkWinner(choice1, choice2) {
+  if (
+    (choice1 == "rock" && choice2 == "scissors") ||
+    (choice1 === "paper" && choice2 == "rock") ||
+    (choice1 == "scissors" && choice2 == "paper")
+  ) {
+    return "Player";
+  } else if (choice1 == choice2) {
+    return "Tie";
+  } else {
+    return "Computer";
+  }
+}
+
+function setWins() {
+  const pWinCount = winners.filter((item) => item == "Player").length;
+  const cWinCount = winners.filter((item) => item == "Computer").length;
+  const ties = winners.filter((item) => item == "Tie").length;
+}
+
+startGame();
